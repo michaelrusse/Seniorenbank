@@ -1,12 +1,17 @@
 package de.telekom.sea7.View;
 
 import java.time.LocalDateTime;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.Iterable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 import de.telekom.sea7.Booking;
@@ -15,10 +20,11 @@ import de.telekom.sea7.Bookings;
 import de.telekom.sea7.BookingsView;
 import de.telekom.sea7.GenericList;
 import de.telekom.sea7.Model.BookingImpl;
+import de.telekom.sea7.Model.GenericListImpl;
 
 public class BookingsViewImpl implements BookingsView {
 
-	private  GenericList<Booking> bookingsimpl;
+	private GenericList<Booking> bookingsimpl;
 
 	public BookingsViewImpl(GenericList<Booking> bookingsimpl) {
 		this.bookingsimpl = bookingsimpl;
@@ -30,7 +36,7 @@ public class BookingsViewImpl implements BookingsView {
 		Scanner scanner = new Scanner(System.in);
 		while (!input.equals("exit")) {
 			System.out.println(
-					"Enter something (e.g add - create new transaction,showAll - lists all transactions, showOne - List one transaction, Download): ");
+					"Enter something (e.g add - create new transaction,showAll - lists all transactions, showOne - List one transaction, Download, Import, exit): ");
 			input = scanner.next();
 
 			switch (input) {
@@ -45,6 +51,9 @@ public class BookingsViewImpl implements BookingsView {
 				break;
 			case "Download":
 				download();
+				break;
+			case "Import":
+				csv1reader();
 				break;
 			case "exit":
 				scanner.close();
@@ -90,7 +99,7 @@ public class BookingsViewImpl implements BookingsView {
 		String bic = scannerAdd.nextLine();
 		System.out.println("Verwendungszweck: ");
 		String verwendungszweck = scannerAdd.nextLine();
-		
+
 		Booking bookingimpl = new BookingImpl(betrag, empfaenger, iban, bic, verwendungszweck, datum);
 		bookingsimpl.add(bookingimpl);
 		// scannerAdd.close();
@@ -117,7 +126,7 @@ public class BookingsViewImpl implements BookingsView {
 		bookingviewimpl.show();
 
 	}
-	
+
 	private void download() {
 		try (PrintWriter writer = new PrintWriter(new File("test.csv"))) {
 
@@ -154,16 +163,82 @@ public class BookingsViewImpl implements BookingsView {
 				sb.append('\n');
 
 //				writer.write(sb.toString()); - alte Variante
-				
+
 				System.out.println("done!");
 
 			}
 			writer.write(sb.toString());
-			
+
 		} catch (FileNotFoundException e) {
 			System.out.println(e.getMessage());
 		}
 
-				
 	}
+
+	private void csv1reader() {
+
+		// Einlesen des Files und spliten
+		FileReader myFile = null;
+		BufferedReader buff = null;
+		final List<String> lines = new ArrayList<String>();
+
+		try {
+			myFile = new FileReader("test.csv");
+			buff = new BufferedReader(myFile);
+			String line;
+			while ((line = buff.readLine()) != null) {
+				// System.out.println(line); // kontrolle was eingelesen
+
+				lines.add(line);
+			}
+		} catch (IOException e) {
+			System.err.println("Error2 :" + e);
+		} finally {
+			try {
+				buff.close();
+				myFile.close();
+			} catch (IOException e) {
+				System.err.println("Error2 :" + e);
+			}
+		}
+
+		final String[][] valuesArray = new String[lines.size()][];
+		int cnt = 0;
+		for (final String line : lines) {
+			valuesArray[cnt++] = line.split(",");
+		}
+
+		// Ausgabe des Array
+		for (String[] arr : valuesArray) {
+			String betrag = arr [0];
+			String empfaenger = arr [1];
+			String iban = arr [2];
+			String bic = arr [3];
+			String verwendungszweck = arr [4];
+			String datum = arr [5];
+			Booking bookingimpl = new BookingImpl(betrag, empfaenger, iban, bic, verwendungszweck, datum);
+			bookingsimpl.add(bookingimpl);
+		}
+	}
+	/*
+	 * // Einlesen des Files und spliten FileReader myFile= null; BufferedReader
+	 * buff= null; ArrayList<String> values = new ArrayList<String>(); String []
+	 * valuesSplited;
+	 * 
+	 * try { myFile =new FileReader("test.csv"); buff =new BufferedReader(myFile);
+	 * while (true) { String line = buff.readLine(); if (line == null) break;
+	 * values.add(line); System.out.println (line); //kontrolle was eingelesen
+	 * valuesSplited = line.split(","); // Spliten nach dem Sonderzeichen "," } }
+	 * catch (IOException e) { System.err.println("Error2 :"+e); }finally { try{
+	 * buff.close(); myFile.close(); }catch (IOException e) {
+	 * System.err.println("Error2 :"+e); }
+	 * 
+	 * // Umwandeln in Array Object valuesArray[][]= valuesSplited.toArray();
+	 * //Umwandeln in Array //Ausgabe des Array for ( int i= 0 ; i <
+	 * valuesArray.length; i++ ) {for (int j=0; j< valuesArray[i].length; ++j) {
+	 * System.out.print(valuesArray[i][j]); }}
+	 * 
+	 * 
+	 * }
+	 */
 }
