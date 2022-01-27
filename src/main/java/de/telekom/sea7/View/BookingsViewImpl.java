@@ -1,6 +1,7 @@
 package de.telekom.sea7.View;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -186,6 +187,7 @@ public class BookingsViewImpl implements BookingsView {
 			myFile = new FileReader("test.csv");
 			buff = new BufferedReader(myFile);
 			String line;
+			buff.readLine();
 			while ((line = buff.readLine()) != null) {
 				// System.out.println(line); // kontrolle was eingelesen
 
@@ -202,43 +204,28 @@ public class BookingsViewImpl implements BookingsView {
 			}
 		}
 		
-		final Object[][] valuesArray = new Object[lines.size()][];
-		int cnt = 0;
-		for (final String line : lines) {
-			valuesArray[cnt++] = line.split(",");
-		}
 
-		// Ausgabe des Array
-		for (Object[] arr : valuesArray) {
-			Object betrag = (float )arr[0] ;
-			Object empfaenger = (String)arr [1];
-			Object iban = (String)arr [2];
-			Object bic = (String)arr [3];
-			Object verwendungszweck = (String)arr [4];
-			Object datum = (LocalDateTime)arr[5];
-			
-			Booking bookingimpl = new BookingImpl(betrag, empfaenger, iban, bic, verwendungszweck, datum);
-			bookingsimpl.add(bookingimpl); */
-		}
-	}
-/*
 		final String[][] valuesArray = new String[lines.size()][];
 		int cnt = 0;
 		for (final String line : lines) {
 			valuesArray[cnt++] = line.split(",");
 		}
 
+				
+		
 		// Ausgabe des Array
 		for (String[] arr : valuesArray) {
+			
 			float betrag = Float.parseFloat(arr[0]) ;
 			String empfaenger = arr [1];
 			String iban = arr [2];
 			String bic = arr [3];
 			String verwendungszweck = arr [4];
-			//LocalDateTime datum = LocalDateTime.from(arr[5]);
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+			LocalDateTime datum = LocalDateTime.parse(arr[5]);
 			
 			Booking bookingimpl = new BookingImpl(betrag, empfaenger, iban, bic, verwendungszweck, datum);
-			bookingsimpl.add(bookingimpl); */
+			bookingsimpl.add(bookingimpl); 
 		}
 	}
 	/*
