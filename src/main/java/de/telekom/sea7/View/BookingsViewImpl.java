@@ -201,7 +201,27 @@ public class BookingsViewImpl implements BookingsView {
 				System.err.println("Error2 :" + e);
 			}
 		}
+		
+		final Object[][] valuesArray = new Object[lines.size()][];
+		int cnt = 0;
+		for (final String line : lines) {
+			valuesArray[cnt++] = line.split(",");
+		}
 
+		// Ausgabe des Array
+		for (Object[] arr : valuesArray) {
+			Object betrag = (float )arr[0] ;
+			Object empfaenger = (String)arr [1];
+			Object iban = (String)arr [2];
+			Object bic = (String)arr [3];
+			Object verwendungszweck = (String)arr [4];
+			Object datum = (LocalDateTime)arr[5];
+			
+			Booking bookingimpl = new BookingImpl(betrag, empfaenger, iban, bic, verwendungszweck, datum);
+			bookingsimpl.add(bookingimpl); */
+		}
+	}
+/*
 		final String[][] valuesArray = new String[lines.size()][];
 		int cnt = 0;
 		for (final String line : lines) {
@@ -210,14 +230,15 @@ public class BookingsViewImpl implements BookingsView {
 
 		// Ausgabe des Array
 		for (String[] arr : valuesArray) {
-			String betrag = arr [0];
+			float betrag = Float.parseFloat(arr[0]) ;
 			String empfaenger = arr [1];
 			String iban = arr [2];
 			String bic = arr [3];
 			String verwendungszweck = arr [4];
-			String datum = arr [5];
+			//LocalDateTime datum = LocalDateTime.from(arr[5]);
+			
 			Booking bookingimpl = new BookingImpl(betrag, empfaenger, iban, bic, verwendungszweck, datum);
-			bookingsimpl.add(bookingimpl);
+			bookingsimpl.add(bookingimpl); */
 		}
 	}
 	/*
