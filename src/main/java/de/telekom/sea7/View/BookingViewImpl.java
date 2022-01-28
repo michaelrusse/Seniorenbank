@@ -19,15 +19,15 @@ public class BookingViewImpl implements BookingView {
 		String input = "";
 		Scanner scannerOneTrans = new Scanner(System.in);
 		while (!input.equals("back")) {
-			System.out.println("Enter something: ");
+			System.out.println("\nedit transaktion:\n  \n 1 - change transaktion \n 2 - show transaktion \n back - back to main menu ");
 			input = scannerOneTrans.next();
 
 			switch (input) {
-			case "Newbooking":
+			case "1":
 				newBooking();
 				break;
 				
-			case "show":
+			case "2":
 				show();
 				break;
 			case "back": // scannerOneTrans.close();
@@ -71,9 +71,15 @@ public class BookingViewImpl implements BookingView {
 
 		System.out.println("Bitte geben Sie den Betrag ein: ");
 		float einBetrag = Float.parseFloat(transferscanner.nextLine());
+		
+		bookingimpl.setBetrag(einBetrag);
+		bookingimpl.setEmpfaenger(einEmpfaenger);
+		bookingimpl.setIban(einIBAN);
+		bookingimpl.setBic(einBic);
+		bookingimpl.getDatum();
 
-		Booking buchung = new BookingImpl(einBetrag, einEmpfaenger, einIBAN, einBic, einVerwendungszweck,
-				LocalDateTime.now());
+//		Booking buchung = new BookingImpl(einBetrag, einEmpfaenger, einIBAN, einBic, einVerwendungszweck,
+//				LocalDateTime.now());
 
 	}
 }

@@ -37,23 +37,23 @@ public class BookingsViewImpl implements BookingsView {
 		Scanner scanner = new Scanner(System.in);
 		while (!input.equals("exit")) {
 			System.out.println(
-					"Enter something (e.g add - create new transaction,showAll - lists all transactions, showOne - List one transaction, Download, Import, exit): ");
+					"\nTransaktionsmenu:\n \n 1 - create new transaction \n 2 - lists all transactions \n 3 - List one transaction  \n 4 - Download \n 5 - Import \n exit - Programm beenden");
 			input = scanner.next();
 
 			switch (input) {
-			case "add":
+			case "1":
 				add();
 				break;
-			case "showOne":
-				showOne();
-				break;
-			case "showAll":
+			case "2":
 				showAll();
 				break;
-			case "Download":
+			case "3":
+				showOne();
+				break;
+			case "4":
 				download();
 				break;
-			case "Import":
+			case "5":
 				csv1reader();
 				break;
 			case "exit":
@@ -124,7 +124,7 @@ public class BookingsViewImpl implements BookingsView {
 		Booking temp = bookingsimpl.getOneObject(index);
 
 		BookingView bookingviewimpl = new BookingViewImpl(temp);
-		bookingviewimpl.show();
+		bookingviewimpl.menu();
 
 	}
 
