@@ -202,7 +202,7 @@ public class BookingsViewImpl implements BookingsView {
 				Booking bookingimpl = new BookingImpl(betrag, empfaenger, iban, bic, verwendungszweck, datum);
 				bookingsimpl.add(bookingimpl);
 
-				lines.add(line);
+				
 			}
 		} catch (IOException e) {
 			System.err.println("Error2 :" + e);
