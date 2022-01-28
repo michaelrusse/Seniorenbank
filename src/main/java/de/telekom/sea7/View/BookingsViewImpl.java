@@ -177,12 +177,8 @@ public class BookingsViewImpl implements BookingsView {
 	}
 
 	private void csv1reader() {
-<<<<<<< HEAD
-		// Einlesen des Files und spliten
-=======
+// Einlesen des Files und splitten
 
-		// Einlesen des Files und splitten
->>>>>>> branch 'master' of git@github.com:michaelrusse/Seniorenbank.git
 		FileReader myFile = null;
 		BufferedReader buff = null;
 		final List<String> lines = new ArrayList<String>();
@@ -194,8 +190,6 @@ public class BookingsViewImpl implements BookingsView {
 			buff.readLine();
 			while ((line = buff.readLine()) != null) {
 				// System.out.println(line); // kontrolle was eingelesen
-<<<<<<< HEAD
-=======
 				String[] ausgelesenerWert = line.split(trenner);
 				float betrag = Float.parseFloat(ausgelesenerWert[0]);
 				String empfaenger = ausgelesenerWert[1];
@@ -206,9 +200,6 @@ public class BookingsViewImpl implements BookingsView {
 				LocalDateTime datum = LocalDateTime.parse(ausgelesenerWert[5]);
 				Booking bookingimpl = new BookingImpl(betrag, empfaenger, iban, bic, verwendungszweck, datum);
 				bookingsimpl.add(bookingimpl);
-
->>>>>>> branch 'master' of git@github.com:michaelrusse/Seniorenbank.git
-				lines.add(line);
 			}
 		} catch (IOException e) {
 			System.err.println("Error2 :" + e);
@@ -220,60 +211,8 @@ public class BookingsViewImpl implements BookingsView {
 				System.err.println("Error2 :" + e);
 			}
 		}
-<<<<<<< HEAD
-		final String[][] valuesArray = new String[lines.size()][];
-		int cnt = 0;
-		for (final String line : lines) {
-			valuesArray[cnt++] = line.split(",");
-		}
-		// Ausgabe des Array
-		for (String[] arr : valuesArray) {
-			
-			float betrag = Float.parseFloat(arr[0]) ;
-			String empfaenger = arr [1];
-			String iban = arr [2];
-			String bic = arr [3];
-			String verwendungszweck = arr [4];
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-			LocalDateTime datum = LocalDateTime.parse(arr[5]);
-			
-			Booking bookingimpl = new BookingImpl(betrag, empfaenger, iban, bic, verwendungszweck, datum);
-			bookingsimpl.add(bookingimpl); 
-		}
-=======
 
->>>>>>> branch 'master' of git@github.com:michaelrusse/Seniorenbank.git
 	}
-<<<<<<< HEAD
-	/*
-	 * // Einlesen des Files und spliten FileReader myFile= null; 
-	 * BufferedReader buff= null; 
-	 * ArrayList<String> values = new ArrayList<String>(); 
-	 * String []
-	 * valuesSplited;
-	 * 
-	 * try { myFile =new FileReader("test.csv"); 
-	 * buff =new BufferedReader(myFile);
-	 * while (true) { String line = buff.readLine(); 
-	 * if (line == null) break;
-	 * values.add(line); System.out.println (line); 
-	 * //kontrolle was eingelesen
-	 * valuesSplited = line.split(","); 
-	 * // Spliten nach dem Sonderzeichen "," } }
-	 * catch (IOException e) { System.err.println("Error2 :"+e); }finally { try{
-	 * buff.close(); myFile.close(); }catch (IOException e) {
-	 * System.err.println("Error2 :"+e); }
-	 * 
-	 * // Umwandeln in Array Object valuesArray[][]= valuesSplited.toArray();
-	 * //Umwandeln in Array //Ausgabe des Array for ( int i= 0 ; i <
-	 * valuesArray.length; i++ ) {for (int j=0; j< valuesArray[i].length; ++j) {
-	 * System.out.print(valuesArray[i][j]); }}
-	 * 
-	 * 
-	 * }
-	 */
-=======
->>>>>>> branch 'master' of git@github.com:michaelrusse/Seniorenbank.git
 }
 
 /*
