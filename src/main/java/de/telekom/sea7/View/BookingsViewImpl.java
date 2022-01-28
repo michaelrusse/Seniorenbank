@@ -177,12 +177,10 @@ public class BookingsViewImpl implements BookingsView {
 	}
 
 	private void csv1reader() {
-
 		// Einlesen des Files und spliten
 		FileReader myFile = null;
 		BufferedReader buff = null;
 		final List<String> lines = new ArrayList<String>();
-
 		try {
 			myFile = new FileReader("test.csv");
 			buff = new BufferedReader(myFile);
@@ -190,7 +188,6 @@ public class BookingsViewImpl implements BookingsView {
 			buff.readLine();
 			while ((line = buff.readLine()) != null) {
 				// System.out.println(line); // kontrolle was eingelesen
-
 				lines.add(line);
 			}
 		} catch (IOException e) {
@@ -203,16 +200,11 @@ public class BookingsViewImpl implements BookingsView {
 				System.err.println("Error2 :" + e);
 			}
 		}
-		
-
 		final String[][] valuesArray = new String[lines.size()][];
 		int cnt = 0;
 		for (final String line : lines) {
 			valuesArray[cnt++] = line.split(",");
 		}
-
-				
-		
 		// Ausgabe des Array
 		for (String[] arr : valuesArray) {
 			
@@ -229,14 +221,20 @@ public class BookingsViewImpl implements BookingsView {
 		}
 	}
 	/*
-	 * // Einlesen des Files und spliten FileReader myFile= null; BufferedReader
-	 * buff= null; ArrayList<String> values = new ArrayList<String>(); String []
+	 * // Einlesen des Files und spliten FileReader myFile= null; 
+	 * BufferedReader buff= null; 
+	 * ArrayList<String> values = new ArrayList<String>(); 
+	 * String []
 	 * valuesSplited;
 	 * 
-	 * try { myFile =new FileReader("test.csv"); buff =new BufferedReader(myFile);
-	 * while (true) { String line = buff.readLine(); if (line == null) break;
-	 * values.add(line); System.out.println (line); //kontrolle was eingelesen
-	 * valuesSplited = line.split(","); // Spliten nach dem Sonderzeichen "," } }
+	 * try { myFile =new FileReader("test.csv"); 
+	 * buff =new BufferedReader(myFile);
+	 * while (true) { String line = buff.readLine(); 
+	 * if (line == null) break;
+	 * values.add(line); System.out.println (line); 
+	 * //kontrolle was eingelesen
+	 * valuesSplited = line.split(","); 
+	 * // Spliten nach dem Sonderzeichen "," } }
 	 * catch (IOException e) { System.err.println("Error2 :"+e); }finally { try{
 	 * buff.close(); myFile.close(); }catch (IOException e) {
 	 * System.err.println("Error2 :"+e); }
