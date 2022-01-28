@@ -177,12 +177,11 @@ public class BookingsViewImpl implements BookingsView {
 	}
 
 	private void csv1reader() {
+// Einlesen des Files und splitten
 
-		// Einlesen des Files und splitten
 		FileReader myFile = null;
 		BufferedReader buff = null;
 		final List<String> lines = new ArrayList<String>();
-
 		try {
 			myFile = new FileReader("test.csv");
 			buff = new BufferedReader(myFile);
@@ -201,8 +200,6 @@ public class BookingsViewImpl implements BookingsView {
 				LocalDateTime datum = LocalDateTime.parse(ausgelesenerWert[5]);
 				Booking bookingimpl = new BookingImpl(betrag, empfaenger, iban, bic, verwendungszweck, datum);
 				bookingsimpl.add(bookingimpl);
-
-				
 			}
 		} catch (IOException e) {
 			System.err.println("Error2 :" + e);
