@@ -10,7 +10,15 @@
 		<maven.compiler.target>17</maven.compiler.target>
 
 	</properties>
-
+	
+	<!-- https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client 
+	
+<dependency>
+    <groupId>org.mariadb.jdbc</groupId>
+    <artifactId>mariadb-java-client</artifactId>
+    <version>3.0.3</version>
+</dependency>
+-->
 
 
 </project>
