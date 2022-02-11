@@ -39,7 +39,7 @@ public class BookingsViewImpl implements BookingsView {
 	private Connection con;
 	private IBANs ibans;
 
-	public BookingsViewImpl(Bookings bookingsimpl, Connection con , IBANs ibans) {
+	public BookingsViewImpl(Bookings bookingsimpl, Connection con, IBANs ibans) {
 		this.bookingsimpl = bookingsimpl;
 		this.con = con;
 		this.ibans = ibans;
@@ -78,14 +78,14 @@ public class BookingsViewImpl implements BookingsView {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
+
 				break;
 			case "4":
 				download();
 				break;
-/*			case "5":
-				csv1reader();
-				break;*/
+			/*
+			 * case "5": csv1reader(); break;
+			 */
 			case "exit":
 				scanner.close();
 				System.out.println();
@@ -121,23 +121,21 @@ public class BookingsViewImpl implements BookingsView {
 			scannerAdd.next();
 		}
 		float betrag = scannerAdd.nextFloat();
-
 		scannerAdd.nextLine();
 		System.out.println("Empfänger: ");
 		String empfaenger = scannerAdd.nextLine();
 		System.out.println("IBAN: ");
 		String iban = scannerAdd.nextLine();
+		
 		IBAN ibanobject1;
 		try {
-		ibanobject1 = ibans.get(iban);
-		System.out.println(ibanobject1.getID());}
-		catch (SQLException e) {
+			ibanobject1 = ibans.get(iban);
+			System.out.println(ibanobject1.getID());
+		} catch (SQLException e) {
 			IBANImpl riban = new IBANImpl(0, iban);
 			ibanobject1 = ibans.add(riban);
-			
 		}
 
-		
 		System.out.println("BIC: ");
 		String bic = scannerAdd.nextLine();
 		System.out.println("Verwendungszweck: ");
@@ -151,7 +149,6 @@ public class BookingsViewImpl implements BookingsView {
 	private void showAll() throws SQLException {
 
 		bookingsimpl.show();
-		
 
 		/*
 		 * for (Object o : bookingsimpl) { Booking tempTrans = (Booking) o;
@@ -162,7 +159,7 @@ public class BookingsViewImpl implements BookingsView {
 
 	}
 
-	private void showOne()throws SQLException {
+	private void showOne() throws SQLException {
 
 		PreparedStatement ps = con.prepareStatement(
 				"select ID,Empfaenger,IBAN,BIC,Verwendungszweck, Betrag, Datum from showall where ID = ?");
@@ -203,10 +200,10 @@ public class BookingsViewImpl implements BookingsView {
 		 * System.out.println("Wähle den gewünschten Datensatz aus: "); int index =
 		 * scannershowOne.nextInt(); scannershowOne.nextLine(); Booking temp =
 		 * bookingsimpl.getOneObject(index);
-		 
-		BookingView bookingviewimpl = new BookingViewImpl(temp);
-		bookingviewimpl.menu();*/
-		
+		 * 
+		 * BookingView bookingviewimpl = new BookingViewImpl(temp);
+		 * bookingviewimpl.menu();
+		 */
 
 	}
 
@@ -258,43 +255,29 @@ public class BookingsViewImpl implements BookingsView {
 
 	}
 
-/*	private void csv1reader() {
-// Einlesen des Files und splitten
-
-		FileReader myFile = null;
-		BufferedReader buff = null;
-		final List<String> lines = new ArrayList<String>();
-		try {
-			myFile = new FileReader("test.csv");
-			buff = new BufferedReader(myFile);
-			String line = "";
-			String trenner = ",";
-			buff.readLine();
-			while ((line = buff.readLine()) != null) {
-				// System.out.println(line); // kontrolle was eingelesen
-				String[] ausgelesenerWert = line.split(trenner);
-				float betrag = Float.parseFloat(ausgelesenerWert[0]);
-				String empfaenger = ausgelesenerWert[1];
-				String iban = ausgelesenerWert[2];
-				String bic = ausgelesenerWert[3];
-				String verwendungszweck = ausgelesenerWert[4];
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-				LocalDateTime datum = LocalDateTime.parse(ausgelesenerWert[5]);
-				Booking bookingimpl = new BookingImpl(betrag, empfaenger, iban, bic, verwendungszweck, datum);
-				bookingsimpl.add(bookingimpl);
-			}
-		} catch (IOException e) {
-			System.err.println("Error2 :" + e);
-		} finally {
-			try {
-				buff.close();
-				myFile.close();
-			} catch (IOException e) {
-				System.err.println("Error2 :" + e);
-			}
-		}
-
-	}*/
+	/*
+	 * private void csv1reader() { // Einlesen des Files und splitten
+	 * 
+	 * FileReader myFile = null; BufferedReader buff = null; final List<String>
+	 * lines = new ArrayList<String>(); try { myFile = new FileReader("test.csv");
+	 * buff = new BufferedReader(myFile); String line = ""; String trenner = ",";
+	 * buff.readLine(); while ((line = buff.readLine()) != null) { //
+	 * System.out.println(line); // kontrolle was eingelesen String[]
+	 * ausgelesenerWert = line.split(trenner); float betrag =
+	 * Float.parseFloat(ausgelesenerWert[0]); String empfaenger =
+	 * ausgelesenerWert[1]; String iban = ausgelesenerWert[2]; String bic =
+	 * ausgelesenerWert[3]; String verwendungszweck = ausgelesenerWert[4];
+	 * DateTimeFormatter formatter =
+	 * DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"); LocalDateTime datum =
+	 * LocalDateTime.parse(ausgelesenerWert[5]); Booking bookingimpl = new
+	 * BookingImpl(betrag, empfaenger, iban, bic, verwendungszweck, datum);
+	 * bookingsimpl.add(bookingimpl); } } catch (IOException e) {
+	 * System.err.println("Error2 :" + e); } finally { try { buff.close();
+	 * myFile.close(); } catch (IOException e) { System.err.println("Error2 :" + e);
+	 * } }
+	 * 
+	 * }
+	 */
 }
 
 /*
