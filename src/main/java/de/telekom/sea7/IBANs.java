@@ -4,7 +4,7 @@ import java.sql.SQLException;
 
 public interface IBANs {
 
-	void add(IBAN ibans) throws SQLException;
+	IBAN add(IBAN ibans) throws SQLException;
 
 	IBAN get(int id) throws SQLException;
 

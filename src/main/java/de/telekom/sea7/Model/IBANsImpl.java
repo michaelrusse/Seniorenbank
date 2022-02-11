@@ -20,7 +20,7 @@ import java.sql.Statement;
 public class IBANsImpl implements IBANs {
 
 	private Connection con;
-//	IBAN iban;
+	IBAN iban;
 
 	public IBANsImpl(Connection con) {
 		this.con = con;
@@ -28,15 +28,20 @@ public class IBANsImpl implements IBANs {
 	}
 
 	@Override
-	public void add(IBAN ibans) throws SQLException {
+	public IBAN add(IBAN ibans) throws SQLException {
 
 		System.out.println("Start Buchung");
-		PreparedStatement ps = con.prepareStatement("insert into IBAN (IBAN) values (?)");
+		PreparedStatement ps = con.prepareStatement("insert into IBAN (IBAN) values (?)",
+				Statement.RETURN_GENERATED_KEYS);
 
 		ps.setString(1, ibans.getIBAN());
 
 		ps.executeUpdate();
-
+		ps.getGeneratedKeys();
+		ResultSet result = ps.getGeneratedKeys();
+		int rid = result.getInt(2);
+		ibans.setID(rid);
+		return ibans;
 	}
 
 	@Override
@@ -59,11 +64,14 @@ public class IBANsImpl implements IBANs {
 		ResultSet result = ps.executeQuery();
 		if (result.next()) {
 			int rid = result.getInt(1);
-			String riban = result.getString(2);
-
+			String riban;
+			riban = result.getString(2);
 			return new IBANImpl(rid, riban);
-		} else {
-			throw new SQLException("Falsche IBAN");
+		} else
+
+		{
+			 throw new SQLException();
 		}
 	}
 }
+//public IBAN get(String iban) throws SQLException

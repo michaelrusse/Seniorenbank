@@ -34,6 +34,7 @@ public class BookingsImpl implements Iterable, Bookings {
 		ps.setString(2, bookingimpl.getVerwendungszweck());
 		ps.setFloat(3, bookingimpl.getBetrag());
 		
+		
 
 		ps.executeUpdate();
 
