@@ -16,9 +16,13 @@ public interface Booking {
 
 	void setEmpfaenger(String empfaenger);
 
-	String getIban();
+//	String getIban();
+	
+	IBAN getIban();
 
-	void setIban(String iban);
+//	void setIban(String iban);
+	
+	void setIban(IBAN iban);
 
 	String getBic();
 
@@ -27,5 +31,7 @@ public interface Booking {
 	String getVerwendungszweck();
 
 	void setVerwendungszweck(String verwendungszweck);
+
+//	int getIban_id();
 
 }
