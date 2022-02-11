@@ -3,19 +3,27 @@ package de.telekom.sea7.Model;
 import java.time.LocalDateTime;
 
 import de.telekom.sea7.Booking;
+import de.telekom.sea7.IBAN;
 
 public class BookingImpl implements Booking {
 	
 	private float betrag;
 	private String empfaenger;
-	private String iban;
+//	private String iban;
+//	private int iban_id;
 	private String bic;
 	private String verwendungszweck;
 	private LocalDateTime datum;
 	
-	public BookingImpl( float betrag, String empfaenger, String iban, String bic, String verwendungszweck, LocalDateTime datum)  {
+	IBAN iban;
+	
+
+	//public BookingImpl( float betrag, String empfaenger, String iban , String bic, String verwendungszweck, LocalDateTime datum)
+	public BookingImpl( float betrag, String empfaenger, IBAN iban , String bic, String verwendungszweck, LocalDateTime datum)  {
 		this.betrag = betrag;
 		this.empfaenger = empfaenger;
+//		this.iban = iban;
+//		this.iban_id = iban_id;
 		this.iban = iban;
 		this.bic = bic;
 		this.verwendungszweck = verwendungszweck;
@@ -53,14 +61,16 @@ public class BookingImpl implements Booking {
 	}
 
 	@Override
-	public String getIban() {
+	public IBAN getIban() {
 		return iban;
 	}
 
 	@Override
-	public void setIban(String iban) {
+	public void setIban(IBAN iban) {
 		this.iban = iban;
 	}
+	
+	
 
 	@Override
 	public String getBic() {

@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.Iterable;
+import java.rmi.AccessException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.InputMismatchException;
@@ -20,15 +21,28 @@ import de.telekom.sea7.BookingView;
 import de.telekom.sea7.Bookings;
 import de.telekom.sea7.BookingsView;
 import de.telekom.sea7.GenericList;
+import de.telekom.sea7.IBAN;
+import de.telekom.sea7.IBANs;
 import de.telekom.sea7.Model.BookingImpl;
 import de.telekom.sea7.Model.GenericListImpl;
+import de.telekom.sea7.Model.IBANImpl;
+import de.telekom.sea7.Model.IBANsImpl;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class BookingsViewImpl implements BookingsView {
 
-	private GenericList<Booking> bookingsimpl;
+	private Bookings bookingsimpl;
+	private Connection con;
+	private IBANs ibans;
 
-	public BookingsViewImpl(GenericList<Booking> bookingsimpl) {
+	public BookingsViewImpl(Bookings bookingsimpl, Connection con , IBANs ibans) {
 		this.bookingsimpl = bookingsimpl;
+		this.con = con;
+		this.ibans = ibans;
 	}
 
 	@Override
@@ -42,20 +56,36 @@ public class BookingsViewImpl implements BookingsView {
 
 			switch (input) {
 			case "1":
-				add();
+				try {
+					add();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				break;
 			case "2":
-				showAll();
+				try {
+					showAll();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				break;
 			case "3":
-				showOne();
+				try {
+					showOne();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 				break;
 			case "4":
 				download();
 				break;
-			case "5":
+/*			case "5":
 				csv1reader();
-				break;
+				break;*/
 			case "exit":
 				scanner.close();
 				System.out.println();
@@ -80,7 +110,7 @@ public class BookingsViewImpl implements BookingsView {
 	 * transactionView.menu(); }
 	 */
 
-	private void add() {
+	private void add() throws SQLException {
 		LocalDateTime datum = LocalDateTime.now();
 		Scanner scannerAdd = new Scanner(System.in);
 		System.out.println("Wie viel soll überwiesen werden: ");
@@ -96,35 +126,80 @@ public class BookingsViewImpl implements BookingsView {
 		String empfaenger = scannerAdd.nextLine();
 		System.out.println("IBAN: ");
 		String iban = scannerAdd.nextLine();
+		
+		IBAN ibanobject1 = ibans.get(iban);
+		System.out.println(ibanobject1.getID());
+
+		
 		System.out.println("BIC: ");
 		String bic = scannerAdd.nextLine();
 		System.out.println("Verwendungszweck: ");
 		String verwendungszweck = scannerAdd.nextLine();
 
-		Booking bookingimpl = new BookingImpl(betrag, empfaenger, iban, bic, verwendungszweck, datum);
+		Booking bookingimpl = new BookingImpl(betrag, empfaenger, ibanobject1, bic, verwendungszweck, datum);
 		bookingsimpl.add(bookingimpl);
 		// scannerAdd.close();
 	}
 
-	private void showAll() {
+	private void showAll() throws SQLException {
 
-		for (Object o : bookingsimpl) {
-			Booking tempTrans = (Booking) o;
-			System.out.println(bookingsimpl.getIndex(tempTrans) + "-" + tempTrans.getEmpfaenger() + " - "
-					+ tempTrans.getVerwendungszweck() + " - " + String.format("%.2f", tempTrans.getBetrag()) + "€");
-		}
+		bookingsimpl.show();
+		
+
+		/*
+		 * for (Object o : bookingsimpl) { Booking tempTrans = (Booking) o;
+		 * System.out.println(bookingsimpl.getIndex(tempTrans) + "-" +
+		 * tempTrans.getEmpfaenger() + " - " + tempTrans.getVerwendungszweck() + " - " +
+		 * String.format("%.2f", tempTrans.getBetrag()) + "€"); }
+		 */
 
 	}
 
-	private void showOne() {
-		Scanner scannershowOne = new Scanner(System.in);
-		System.out.println("Wähle den gewünschten Datensatz aus: ");
-		int index = scannershowOne.nextInt();
-		scannershowOne.nextLine();
-		Booking temp = bookingsimpl.getOneObject(index);
+	private void showOne()throws SQLException {
 
+		PreparedStatement ps = con.prepareStatement(
+				"select ID,Empfaenger,IBAN,BIC,Verwendungszweck, Betrag, Datum from showall where ID = ?");
+		System.out.println("Wähle den gewünschten Datensatz aus:  ");
+		Scanner scannerselect = new Scanner(System.in);
+
+		ps.setString(1, scannerselect.nextLine());
+		ResultSet rs = ps.executeQuery();
+
+		System.out.println(
+				"+----------+------------------------------+------------+------------+----------------------------------------+----------------------------------+");
+		System.out.print(String.format("|%-10s|", "ID"));
+		System.out.print(String.format("%-30s|", "Empfaenger"));
+		System.out.print(String.format("%-12s|", "IBAN"));
+		System.out.print(String.format("%-12s|", "BIC"));
+		System.out.print(String.format("%-40s|", "Verwendungszweck"));
+		System.out.print(String.format("%-12s|", "Betrag"));
+		System.out.println(String.format("%-21s|", "Datum"));
+		System.out.println(
+				"+----------+------------------------------+------------+------------+----------------------------------------+----------------------------------+");
+
+		while (rs.next()) {
+
+			System.out.print(String.format("|%-10s|", rs.getInt(1)));
+			System.out.print(String.format("%-30s|", rs.getString(2)));
+			System.out.print(String.format("%-12s|", rs.getString(3)));
+			System.out.print(String.format("%-12s|", rs.getString(4)));
+			System.out.print(String.format("%-40s|", rs.getString(5)));
+			System.out.print(String.format("%11.2f€|", rs.getFloat(6)));
+			System.out.println(String.format("%-20s|", rs.getTimestamp(7)));
+
+		}
+		System.out.println(
+				"+----------+------------------------------+------------+------------+----------------------------------------+----------------------------------+");
+
+		/*
+		 * Scanner scannershowOne = new Scanner(System.in);
+		 * System.out.println("Wähle den gewünschten Datensatz aus: "); int index =
+		 * scannershowOne.nextInt(); scannershowOne.nextLine(); Booking temp =
+		 * bookingsimpl.getOneObject(index);
+		 
 		BookingView bookingviewimpl = new BookingViewImpl(temp);
-		bookingviewimpl.menu();
+		bookingviewimpl.menu();*/
+		
 
 	}
 
@@ -176,7 +251,7 @@ public class BookingsViewImpl implements BookingsView {
 
 	}
 
-	private void csv1reader() {
+/*	private void csv1reader() {
 // Einlesen des Files und splitten
 
 		FileReader myFile = null;
@@ -212,7 +287,7 @@ public class BookingsViewImpl implements BookingsView {
 			}
 		}
 
-	}
+	}*/
 }
 
 /*
