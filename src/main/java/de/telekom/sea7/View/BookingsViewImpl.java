@@ -91,6 +91,7 @@ public class BookingsViewImpl implements BookingsView {
 				System.out.println();
 				System.out.println("Programm will be closed...");
 				System.out.println();
+				break;
 			default:
 				System.out.println(
 						"Command unknown. Please enter an existing command. With command 'help' you can list all existing commands.");
@@ -126,9 +127,15 @@ public class BookingsViewImpl implements BookingsView {
 		String empfaenger = scannerAdd.nextLine();
 		System.out.println("IBAN: ");
 		String iban = scannerAdd.nextLine();
-		
-		IBAN ibanobject1 = ibans.get(iban);
-		System.out.println(ibanobject1.getID());
+		IBAN ibanobject1;
+		try {
+		ibanobject1 = ibans.get(iban);
+		System.out.println(ibanobject1.getID());}
+		catch (SQLException e) {
+			IBANImpl riban = new IBANImpl(0, iban);
+			ibanobject1 = ibans.add(riban);
+			
+		}
 
 		
 		System.out.println("BIC: ");
